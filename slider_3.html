@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+  <title>sliderのテスト</title>
+  <style type="text/css">
+  *{
+    margin: 0;
+    padding: 0;
+  }
+
+  #wrap{
+    width: 320px;
+    overflow: hidden;
+  }
+
+  /* プレビューエリア
+     ========================================================================== */
+  .box{
+    position: relative;
+    width: 200px;
+    height: 100px;
+    margin: 20px auto 30px;
+    border: 3px solid #cccccc;
+    -webkit-border-radius: 5px;
+            border-radius: 5px;
+  }
+
+  .box::after{
+    display: block;
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    border-right: 3px solid #cccccc;
+    border-bottom: 3px solid #cccccc;
+    background: #FFF;
+    -webkit-transform: rotate(45deg) translate(-20px, 0);
+    transform: rotate(45deg) translate(-20px, 0);
+    content: "";
+  }
+
+  .box__child{
+    font-size: 24px;
+    text-align: center;
+    line-height: 100px;
+    opacity: .5;
+  }
+
+  /* コントロールエリア
+     ========================================================================== */
+  .ctrl{
+    margin: 10px;
+  }
+
+  .ctrl__header{
+    display: block;
+    margin: 5px 0 20px;
+    color: #666;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .ctrl__textSize{
+    float: left;
+    width: 120px;
+    margin-right: 20px;
+    text-align: center;
+  }
+
+  .ctrl__opacity{
+    float: left;
+    width: 150px;
+  }
+
+
+  /* テキストサイズ */
+  .btn{
+    display: inline-block;
+    width: 40px;
+    height: 38px;
+    -webkit-border-radius: 50%;
+            border-radius: 50%;
+    line-height: 40px;
+    color: #FFF;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .ctrl__textSize--small{
+    margin-right: 20px;
+    background: #00987C;
+    border-bottom: 3px solid #095c4a;
+  }
+
+  .ctrl__textSize--large{
+    background: #01bc9d;
+    border-bottom: 3px solid #288282;
+    }
+
+  /* 透明度 */
+  #opacity{
+    display: block;
+    width: 150px;
+    height: 40px;
+    margin: auto;
+    background: url(line.png) 50% repeat-x;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+
+  input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 30px;
+    height: 30px;
+    border: none;
+    -webkit-border-radius: 50%;
+            border-radius: 50%;
+    background: #ccc;
+  }
+  </style>
+</head>
+
+<body>
+<!-- #wrap -->
+<div id="wrap">
+  <div class="box">
+    <div class="box__child">テスト</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl__textSize" id="fontsize">
+      <span class="ctrl__header">文字の大きさ</span>
+      <div id="small" class="btn ctrl__textSize--small">-</div>
+      <div id="large" class="btn ctrl__textSize--large">+</div>
+    </div>
+
+    <div class="ctrl__opacity">
+      <span class="ctrl__header">透明度</span>
+      <input type="range" name="opacity" max="1" min="0.1" step="0.05" id="opacity">
+    </div>
+  </div>
+</div>
+<!-- //#wrap -->
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script>
+$(function(){
+  // opacity
+  // ==========================================================================
+  var timer = false;
+  $('#opacity').on('change',function(){
+    if(timer !== false){
+      clearTimeout(timer);
+    }
+    timer = setTimeout(function(){
+      var op = $("#opacity").val(),
+          $box = $('.box__child');
+      $box.css('opacity',op);
+    },150);
+  });
+
+  // font-size
+  // ==========================================================================
+  $('#fontsize div').on('touchstart click',function(){
+    var btnName = $(this).attr('id'),
+        $box = $('.box__child'),
+        fs = parseInt($box.css('font-size').replace(/px/,''));
+    console.log(fs);
+    if(13 <= fs && fs <= 43 && btnName === 'small'){
+      $box.css('font-size', fs-3 +'px');
+    } else if(10 <= fs && fs <= 40 &&  btnName === 'large'){
+      $box.css('font-size', fs+3 +'px');
+    } else {
+      return false;
+    };
+  });
+
+});
+</script>
+</body>
+</html>
